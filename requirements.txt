@@ -1,0 +1,10 @@
+joblib==1.4.2
+numpy==2.2.6
+pandas==2.2.3
+scikit-learn==1.6.1
+scipy==1.15.2
+wfdb==4.2.0
+neurokit2==0.2.12
+tqdm==4.66.4
+PyWavelets==1.8.0
+statsmodels==0.14.4
