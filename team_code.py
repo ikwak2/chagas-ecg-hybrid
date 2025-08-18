@@ -39,30 +39,30 @@ def train_model(data_folder, model_folder, verbose):
     all_records = find_records(data_folder)
     print(f"[LOG] Total records found: {len(all_records)}")
 
-    code15_records, code15_labels = [], []
-    other_records = []
+#    code15_records, code15_labels = [], []
+#    other_records = []
 
-    for rec in all_records:
-        header = load_header(os.path.join(data_folder, rec))
-        label = get_label(header)
-        source = get_source(header)
-        if source == 'CODE-15%':
-            code15_records.append(rec)
-            code15_labels.append(int(label))
-        else:
-            other_records.append(rec)
+#    for rec in all_records:
+#        header = load_header(os.path.join(data_folder, rec))
+#        label = get_label(header)
+#        source = get_source(header)
+#        if source == 'CODE-15%':
+#            code15_records.append(rec)
+#            code15_labels.append(int(label))
+#        else:
+#            other_records.append(rec)
 
-    from sklearn.model_selection import train_test_split
-    _, code15_sampled_idx = train_test_split(
-        list(range(len(code15_records))),
-        test_size=0.1,
-        stratify=code15_labels,
-        random_state=42
-    )
-    code15_sampled = [code15_records[i] for i in code15_sampled_idx]
+#    from sklearn.model_selection import train_test_split
+#    _, code15_sampled_idx = train_test_split(
+#        list(range(len(code15_records))),
+#        test_size=0.3,
+#        stratify=code15_labels,
+#        random_state=42
+#    )
+ #   code15_sampled = [code15_records[i] for i in code15_sampled_idx]
 
-    filtered_records = other_records + code15_sampled
-    print(f"[LOG] Records used after filtering: {len(filtered_records)}")
+#    filtered_records = other_records + code15_sampled
+#    print(f"[LOG] Records used after filtering: {len(filtered_records)}")
 
     print(f"[LOG] Initializing ECGDataset...")
     dataset = ECGDataset(
@@ -73,17 +73,17 @@ def train_model(data_folder, model_folder, verbose):
         method=params1['method'],
         is_record=False,
         sample=True,
-        file_list=filtered_records
+        file_list=all_records
     )
 
     all_labels = []
-    for rec in filtered_records:
+    for rec in all_records:
         header = load_header(os.path.join(data_folder, rec))
         label = get_label(header)
         all_labels.append(int(label))
 
     train_set_indices, val_set_indices = train_test_split(
-        list(range(len(filtered_records))),
+        list(range(len(all_records))),
         test_size=0.1,
         stratify=all_labels,
         shuffle=True,
@@ -109,9 +109,11 @@ def train_model(data_folder, model_folder, verbose):
     pos_weight = torch.tensor([pos_weight_value]).to(device)
     print(f"[LOG] pos_count: {pos_count}, neg_count: {neg_count}, pos_weight: {pos_weight_value:.4f}")
 
-    criterion = torch.nn.BCEWithLogitsLoss(pos_weight=pos_weight)
-    
-    
+    from losses import SourceAwareBCELoss, EmbeddingAlignLoss
+
+    # 손실 함수 초기화
+    criterion = SourceAwareBCELoss(pos_weight=pos_weight)
+
     optimizer = torch.optim.Adam(model.parameters(), lr=1e-4)
 
     # Early stopping variables
@@ -133,9 +135,10 @@ def train_model(data_folder, model_folder, verbose):
             sexes = inputs['meta']['sex'].to(device)
             handcrafted = inputs['handcrafted'].to(device)
             labels = labels.unsqueeze(1).to(device)
+            sources = inputs['source']  # 소스 정보
 
             outputs = model(signals, ages, sexes, handcrafted)
-            loss = criterion(outputs, labels)
+            loss = criterion(outputs, labels, sources)
 
             optimizer.zero_grad()
             loss.backward()
@@ -157,9 +160,10 @@ def train_model(data_folder, model_folder, verbose):
                 sexes = inputs['meta']['sex'].to(device)
                 handcrafted = inputs['handcrafted'].to(device)
                 labels = labels.unsqueeze(1).to(device)
+                sources = inputs['source']
 
                 outputs = model(signals, ages, sexes, handcrafted)
-                loss = criterion(outputs, labels)
+                loss = criterion(outputs, labels, sources)
                 val_loss += loss.item()
 
         avg_val_loss = val_loss / len(val_loader_set)

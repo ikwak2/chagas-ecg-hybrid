@@ -72,7 +72,7 @@ class ECGDataset(Dataset):
         signal = reorder_signal(signal, channels, reference_channels)
 
         # 신호 Augumentation signal 0.9~1.1 사이 수를 랜덤하게 곱하기
-        signal = signal * np.random.uniform(0.9, 1.1, 1)
+        signal = signal * np.random.uniform(0.85, 1.15, 1)
 
         # 랜덤하게 시퀀스 길이 조정 0~0.5초정도 사이에서 시작위치 정하기. s1은 0~200 사이의 랜덤 정수
         if len(signal) > 1500:

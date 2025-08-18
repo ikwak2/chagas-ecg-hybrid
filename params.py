@@ -7,4 +7,4 @@ params1 = {
         "beta_param" : False,
         ## 학습관련 파라메터
         "batch_size" : 36,
-        "epochs" : 100 }
+        "epochs" : 10 }
