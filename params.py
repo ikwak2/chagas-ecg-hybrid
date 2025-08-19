@@ -8,4 +8,5 @@ params1 = {
         ## 학습관련 파라메터
         "batch_size" : 36,
 
-        "epochs" : 15 }
+        "epochs" : 12 }
+
