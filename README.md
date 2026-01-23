@@ -103,3 +103,9 @@ where
 - `scores.csv` (output; optional) is file with a collection of scores for your model.
 
 You can use the provided training set for the `training_data` and `holdout_data` files, but we will use different datasets for the validation and test sets, and we will not provide the labels to your code.
+
+## Citation
+
+If you use this code or find it helpful in your research, please cite the corresponding paper:
+
+TBD
