@@ -54,7 +54,7 @@ These features are used as auxiliary inputs to condition the temporal attention 
 
 ## Installation
 
-The implementation was developed with reference to the official PhysioNet Challenge 2025 Python example code available at \url{https://github.com/physionetchallenges/python-example-2025/tree/main?tab=readme-ov-file}.
+The implementation was developed with reference to the official PhysioNet Challenge 2025 Python example code available [here](https://github.com/physionetchallenges/python-example-2025/tree/main?tab=readme-ov-file).
 
 We recommend using a Python virtual environment.
 
