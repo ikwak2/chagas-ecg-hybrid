@@ -108,4 +108,19 @@ You can use the provided training set for the `training_data` and `holdout_data`
 
 If you use this code or find it helpful in your research, please cite the corresponding paper:
 
-TBD
+```
+@article{Im_2026,
+doi = {10.1088/1361-6579/ae8b72},
+url = {https://doi.org/10.1088/1361-6579/ae8b72},
+year = {2026},
+month = {jul},
+publisher = {IOP Publishing},
+volume = {47},
+number = {7},
+pages = {075014},
+author = {Im, Hyuno and Lee, Nahyun and Kang, Taeyoung and Kim, Taehwan and Kim, Donggun and Lee, Dongjae and Oh, Seungsang and Gong, Wuming and Kwak, Il-Youp},
+title = {Auxiliary-conditioned cross-attention with physiologically interpretable features for chagas disease detection from 12-lead ECGs},
+journal = {Physiological Measurement},
+abstract = {Objective. Chagas disease remains a major public-health concern in endemic regions, and chronic cardiac involvement often manifests as conduction abnormalities detectable on standard 12-lead electrocardiograms (ECGs). Reliable automated screening remains challenging because of dataset heterogeneity and label uncertainty, particularly when combining strongly labeled cohorts with large weakly labeled repositories. Approach. We propose a hybrid architecture that integrates a 1D ResNet encoder for local ECG morphology, a bidirectional GRU for long-range temporal context, and handcrafted physiological features and demographics through an auxiliary-conditioned cross-attention module. The auxiliary vector, comprising age, sex, and QRS/conduction descriptors, is projected into a query token that selectively attends to deep sequential embeddings for feature-aware temporal aggregation. To exploit heterogeneous sources while reflecting source reliability, we further adopt a source-aware weighted binary cross-entropy objective. Main results. As team CAUETUMN in the PhysioNet/Computing in Cardiology Challenge 2025, the framework achieved a score of 0.347 on the organizer-held REDS-II leaderboard-validation set during the official phase and 0.218 on the final hidden test set, ranking 17th among 41 eligible teams. Significance. These results suggest that conditioning detection on interpretable QRS and conduction descriptors supports a transparent and physiologically informed screening framework, while highlighting the difficulty of generalizing across heterogeneous cohorts.}
+}
+```
